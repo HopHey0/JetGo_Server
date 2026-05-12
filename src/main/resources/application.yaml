@@ -1,0 +1,12 @@
+ktor:
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - com.hophey.MonitoringKt.configureMonitoring
+      - com.hophey.SerializationKt.configureSerialization
+      - com.hophey.SecurityKt.configureSecurity
+      - com.hophey.PostgresKt.configurePostgres
+      - com.hophey.KoinKt.configureKoin
+      - com.hophey.DIKt.configureDependencyInjection
+      - com.hophey.RoutingKt.configureRouting
