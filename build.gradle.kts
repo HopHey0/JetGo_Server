@@ -29,6 +29,8 @@ dependencies {
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.di)
     implementation(ktorLibs.server.netty)
+    implementation("io.ktor:ktor-server-cors:3.4.0")
+    implementation("io.ktor:ktor-server-status-pages:3.4.0")
 
     // /health endpoint
     implementation(libs.hayden.khealth)
@@ -46,6 +48,7 @@ dependencies {
     implementation("io.r2dbc:r2dbc-h2:1.1.0.RELEASE")
     implementation(libs.postgresql)
     implementation(libs.h2database.h2)
+
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)
