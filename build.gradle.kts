@@ -47,6 +47,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:1.3.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:1.3.0")
     implementation("org.jetbrains.exposed:exposed-dao:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.3.0")
     implementation(libs.postgresql)
     implementation(libs.h2database.h2)
 

@@ -1,6 +1,7 @@
 package com.hophey
 
 import com.hophey.controller.configureRouting
+import com.hophey.di.AppContainer
 import com.hophey.di.appModule
 import com.hophey.plugins.configureContentNegotiation
 import com.hophey.plugins.configureSecurity
@@ -18,11 +19,9 @@ fun main() {
 
 fun Application.module() {
     appModule()
-    configureSecurity()
+    configureSecurity(AppContainer.jwtService)
     configureContentNegotiation()
     configureStatusPages()
     configureRouting()
 
 }
-
-// lol
