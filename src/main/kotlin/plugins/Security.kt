@@ -1,37 +1,24 @@
 package com.hophey.plugins
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import com.hophey.config.JwtConfig
-import io.ktor.http.HttpStatusCode
+import com.hophey.service.JwtService
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.respond
+import io.ktor.server.response.*
 
-fun Application.configureSecurity() {
+fun Application.configureSecurity(
+    jwtService: JwtService
+) {
     install (Authentication) {
         jwt("auth-jwt") {
             realm = JwtConfig.jwtRealm
 
-            verifier {
-                JWT.require(Algorithm.HMAC256(JwtConfig.jwtSecret))
-                    .withAudience(JwtConfig.jwtAudience)
-                    .withIssuer(JwtConfig.jwtRealm)
-                    .build()
-            }
+            verifier(JwtService.verifier)
 
             validate { credential ->
-                val username = credential.payload.getClaim("username").asString()
-                val exp = credential.payload.expiresAt?.time ?: 0
-                val now = System.currentTimeMillis()
-                val isExpired = exp < now
-
-                if (username != null && !isExpired){
-                    JWTPrincipal(payload = credential.payload)
-                } else {
-                    null
-                }
+                jwtService.validator(credential)
             }
 
             challenge { _, _ ->

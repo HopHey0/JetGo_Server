@@ -43,9 +43,11 @@ dependencies {
     implementation(libs.logback.classic)
 
     // Exposed/DB
-    implementation("org.jetbrains.exposed:exposed-core:1.2.0")
-    implementation("org.jetbrains.exposed:exposed-r2dbc:1.2.0")
-    implementation("io.r2dbc:r2dbc-h2:1.1.0.RELEASE")
+    implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("org.jetbrains.exposed:exposed-core:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-dao:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.3.0")
     implementation(libs.postgresql)
     implementation(libs.h2database.h2)
 
