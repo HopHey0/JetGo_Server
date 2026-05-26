@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariConfig
 
 object HikariConfig {
     val config = HikariConfig().apply {
-        jdbcUrl = "127.0.0.1:5432"
+        jdbcUrl = "jdbc:postgresql://127.0.0.1:5432/postgres"
         driverClassName = "org.postgresql.Driver"
         username = "postgres"
         password = "postgres"
