@@ -1,8 +1,6 @@
-package com.hophey.repository.tables
+package com.hophey.repository.tables.authTables
 
 import org.jetbrains.exposed.v1.core.Table
-import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.core.isNotNull
 
 object Users : Table("users") {
     val id = integer("user_id").autoIncrement()

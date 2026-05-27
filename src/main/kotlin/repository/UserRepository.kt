@@ -1,7 +1,7 @@
 package com.hophey.repository
 
 import com.hophey.domain.model.User
-import com.hophey.repository.tables.Users
+import com.hophey.repository.tables.authTables.Users
 import org.jetbrains.exposed.v1.core.ResultRow
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
