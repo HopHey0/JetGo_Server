@@ -13,7 +13,6 @@ class FlightService(
     ): OffersResponse {
         val listOfFlights = flightRepository.getFlights(
             departureDate = flightsRequest.departureDate,
-            arrivalDate = flightsRequest.arrivalDate,
             departureCity = flightsRequest.departureCity,
             arrivalCity = flightsRequest.arrivalCity,
             personAmount = flightsRequest.personAmount

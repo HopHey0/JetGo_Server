@@ -1,7 +1,6 @@
 package com.hophey.domain.model
 
-import com.hophey.dto.FlightResponse
-import kotlinx.serialization.Serializable
+import com.hophey.dto.FlightDto
 
 data class Flight(
     val id: Long,
@@ -21,7 +20,7 @@ data class Flight(
 )
 
 
-fun Flight.toSerializable(): FlightDto{
+fun Flight.toSerializable(): FlightDto {
     return FlightDto(
         id = this.id,
         flightNumber = this.flightNumber,

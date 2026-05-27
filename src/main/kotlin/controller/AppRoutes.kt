@@ -14,5 +14,7 @@ fun Application.configureRouting(){
         }
 
         AppContainer.authController.configure(this)
+
+        AppContainer.flightsController.configure(this)
     }
 }

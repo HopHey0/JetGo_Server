@@ -25,7 +25,6 @@ data class FlightsRequest(
     val departureCity: String,
     val arrivalCity: String,
     val departureDate: String,
-    val arrivalDate: String,
     val personAmount: Int,
 )
 

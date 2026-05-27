@@ -3,11 +3,14 @@ package com.hophey.repository.tables
 import com.hophey.domain.model.Flight
 import com.hophey.repository.tables.flightTables.*
 import com.hophey.repository.tables.seatsTables.FlightsSeats
+import com.hophey.utils.Formatters.formatter
 import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.jdbc.Query
+import org.jetbrains.exposed.v1.jdbc.andWhere
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import java.time.OffsetDateTime
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 class FlightRepository {
 
@@ -27,7 +30,6 @@ class FlightRepository {
 
     fun getFlights(
         departureDate: String,
-        arrivalDate: String,
         departureCity: String,
         arrivalCity: String,
         personAmount: Int
@@ -40,11 +42,10 @@ class FlightRepository {
             .having { FlightsSeats.flightId.count() greaterEq personAmount.toLong() }
 
         flightJoin()
-            .where { (Flights.departureDate greaterEq OffsetDateTime.parse(departureDate)) and (Flights.departureDate lessEq OffsetDateTime.parse(departureDate).plusDays(1)) }
-            .where { (Flights.arrivalDate greaterEq OffsetDateTime.parse(arrivalDate)) and (Flights.arrivalDate lessEq OffsetDateTime.parse(arrivalDate).plusDays(1)) }
-            .where { departureAirport[Airports.city] eq departureCity }
-            .where { arrivalAirport[Airports.city] eq arrivalCity }
-            .where { Flights.id inSubQuery freeSeatsSubquery }
+            .where { (Flights.departureDate greaterEq LocalDate.parse(departureDate, formatter).atStartOfDay().atOffset(ZoneOffset.UTC)) and (Flights.departureDate lessEq LocalDate.parse(departureDate, formatter).atStartOfDay().atOffset(ZoneOffset.UTC).plusDays(1L)) }
+            .andWhere { departureAirport[Airports.city] eq departureCity }
+            .andWhere { arrivalAirport[Airports.city] eq arrivalCity }
+            .andWhere { Flights.id inSubQuery freeSeatsSubquery }
             .map { row -> rowToFlight(row) }
     }
 
@@ -69,8 +70,12 @@ class FlightRepository {
                 departureAirport[Airports.utcDiff].alias("departure_utc_diff"),
                 arrivalAirport[Airports.city].alias("arrival_city"),
                 arrivalCountry[Countries.fullName].alias("arrival_country_name"),
+                arrivalCountry[Countries.countryCode].alias("arrival_country_code"),
                 arrivalAirport[Airports.airportCode].alias("arrival_airport_code"),
                 arrivalAirport[Airports.utcDiff].alias("arrival_utc_diff"),
+                Airlines.airLineName.alias("airline_name"),
+                Airlines.airlineCode,
+                Airlines.logoUrl,
                 Flights.flightNum,
                 Flights.departureDate,
                 Flights.arrivalDate,
