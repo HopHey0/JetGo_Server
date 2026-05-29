@@ -5,7 +5,7 @@ import com.hophey.controller.FlightsController
 import com.hophey.repository.TokenRepository
 import com.hophey.repository.UserRepository
 import com.hophey.repository.database.DatabaseFactory
-import com.hophey.repository.tables.FlightRepository
+import com.hophey.repository.FlightRepository
 import com.hophey.service.AuthService
 import com.hophey.service.FlightService
 import com.hophey.service.JwtService

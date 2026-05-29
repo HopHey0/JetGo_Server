@@ -37,6 +37,26 @@ class FlightsController(
                         false -> call.respond(hotOffersResponse)
                     }
                 }
+
+                /*
+                /airports/search/?q=pattern API
+                Return response with list of found airports
+                 */
+                get("/airports/search"){
+                    val query = call.request.queryParameters["q"]
+                        ?.trim()
+                        ?.takeIf { it.length > 2 }
+                        ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Query parameter must be at least 2 chars", 400))
+
+                    val pattern = "%${query.lowercase()}%"
+
+                    val airportsResponse = flightService.getAirports(pattern)
+
+                    when (airportsResponse.airports.isEmpty()) {
+                        true -> call.respond(HttpStatusCode.NoContent, ErrorResponse("No results found", 204))
+                        false -> call.respond(airportsResponse)
+                    }
+                }
             }
         }
     }

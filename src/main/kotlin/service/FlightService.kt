@@ -1,9 +1,10 @@
 package com.hophey.service
 
-import com.hophey.domain.model.toSerializable
+import com.hophey.dto.AirportsResponse
 import com.hophey.dto.FlightsRequest
 import com.hophey.dto.OffersResponse
-import com.hophey.repository.tables.FlightRepository
+import com.hophey.dto.toDto
+import com.hophey.repository.FlightRepository
 
 class FlightService(
     private val flightRepository: FlightRepository
@@ -19,14 +20,21 @@ class FlightService(
         )
 
         return OffersResponse(
-            listOfFlights.map { it.toSerializable() }
+            listOfFlights.map { it.toDto() }
         )
     }
 
     fun getHotOffers(): OffersResponse {
         val listOfOffers = flightRepository.getHotOffers()
         return OffersResponse(
-            listOfOffers.map { it.toSerializable() }
+            listOfOffers.map { it.toDto() }
+        )
+    }
+
+    fun getAirports(query: String): AirportsResponse {
+        val listOfAirports = flightRepository.getAirports(query)
+        return AirportsResponse(
+            listOfAirports.map { it.toDto() }
         )
     }
 }
