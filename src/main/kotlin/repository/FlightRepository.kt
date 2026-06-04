@@ -41,9 +41,9 @@ class FlightRepository {
     fun getAirports(query: String): List<Airport> = transaction {
         airportCountryJoin()
             .where {
-                        (Airports.city.lowerCase() like query) or
-                        (Airports.fullName.lowerCase() like query) or
-                        (Airports.airportCode.lowerCase() like query)
+                (Airports.city.lowerCase() like query) or
+                (Airports.fullName.lowerCase() like query) or
+                (Airports.airportCode.lowerCase() like query)
             }
             .limit(20)
             .map { row ->

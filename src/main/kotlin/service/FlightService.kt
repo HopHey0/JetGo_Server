@@ -33,8 +33,12 @@ class FlightService(
 
     fun getAirports(query: String): AirportsResponse {
         val listOfAirports = flightRepository.getAirports(query)
-        return AirportsResponse(
-            listOfAirports.map { it.toDto() }
-        )
+        return if (!listOfAirports.isEmpty()) {
+            AirportsResponse(
+                listOfAirports.map { it.toDto() }
+            )
+        } else {
+            AirportsResponse(emptyList())
+        }
     }
 }

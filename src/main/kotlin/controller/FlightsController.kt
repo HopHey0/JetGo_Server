@@ -1,10 +1,12 @@
 package com.hophey.controller
 
+import com.hophey.dto.AirportsResponse
 import com.hophey.dto.AuthRequest
 import com.hophey.dto.ErrorResponse
 import com.hophey.dto.FlightsRequest
 import com.hophey.dto.LogoutRequest
 import com.hophey.dto.RefreshTokenRequest
+import com.hophey.repository.tables.flightTables.Airports
 import com.hophey.service.AuthService
 import com.hophey.service.FlightService
 import io.ktor.http.*
@@ -43,17 +45,18 @@ class FlightsController(
                 Return response with list of found airports
                  */
                 get("/airports/search"){
+                    val emptyResponse = AirportsResponse(emptyList())
                     val query = call.request.queryParameters["q"]
                         ?.trim()
                         ?.takeIf { it.length > 2 }
-                        ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Query parameter must be at least 2 chars", 400))
+                        ?: return@get call.respond(HttpStatusCode.BadRequest, emptyResponse)
 
                     val pattern = "%${query.lowercase()}%"
 
                     val airportsResponse = flightService.getAirports(pattern)
 
                     when (airportsResponse.airports.isEmpty()) {
-                        true -> call.respond(HttpStatusCode.NoContent, ErrorResponse("No results found", 204))
+                        true -> call.respond(HttpStatusCode.NoContent, emptyResponse)
                         false -> call.respond(airportsResponse)
                     }
                 }
