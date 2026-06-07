@@ -9,6 +9,7 @@ import org.koin.ktor.ext.inject
 fun Application.configureRouting(){
     val authController: AuthController by inject()
     val flightsController: FlightsController by inject()
+    val favouritesController: FavouritesController by inject()
 
     routing {
         get("/test"){
@@ -18,5 +19,7 @@ fun Application.configureRouting(){
         authController.configure(this)
 
         flightsController.configure(this)
+
+        favouritesController.configure(this)
     }
 }
