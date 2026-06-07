@@ -18,6 +18,7 @@ import org.jetbrains.exposed.v1.core.count
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greaterEq
 import org.jetbrains.exposed.v1.core.inSubQuery
+import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.core.lessEq
 import org.jetbrains.exposed.v1.core.like
 import org.jetbrains.exposed.v1.core.lowerCase
@@ -71,13 +72,19 @@ class FlightRepository {
             .groupBy(FlightsSeats.flightId)
             .having { FlightsSeats.flightId.count() greaterEq personAmount.toLong() }
 
+        val utcDiff = Airports
+            .select(Airports.utcDiff)
+            .where { Airports.airportCode eq departureCity }
+            .single()[Airports.utcDiff]
+
+        val localDate = LocalDate.parse(departureDate, Formatters.formatter)
+        val startUtc = localDate.atStartOfDay().atOffset(ZoneOffset.ofHours(utcDiff))
+        val endUtc   = localDate.plusDays(1).atStartOfDay().atOffset(ZoneOffset.ofHours(utcDiff))
+
         flightJoin()
             .where {
-                (Flights.departureDate greaterEq LocalDate.parse(departureDate, Formatters.formatter).atStartOfDay()
-                    .atOffset(ZoneOffset.UTC)) and (Flights.departureDate lessEq LocalDate.parse(
-                    departureDate,
-                    Formatters.formatter
-                ).atStartOfDay().atOffset(ZoneOffset.UTC).plusDays(1L))
+                (Flights.departureDate greaterEq startUtc) and
+                (Flights.departureDate less endUtc)
             }
             .andWhere { departureAirport[Airports.airportCode] eq departureCity }
             .andWhere { arrivalAirport[Airports.airportCode] eq arrivalCity }

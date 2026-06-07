@@ -5,6 +5,7 @@ import com.hophey.dto.AuthRequest
 import com.hophey.dto.ErrorResponse
 import com.hophey.dto.FlightsRequest
 import com.hophey.dto.LogoutRequest
+import com.hophey.dto.OffersResponse
 import com.hophey.dto.RefreshTokenRequest
 import com.hophey.repository.tables.flightTables.Airports
 import com.hophey.service.AuthService
@@ -20,14 +21,14 @@ class FlightsController(
     fun configure(routing: Routing) {
         routing.apply {
             route("flights") {
-                get{
+                post{
                     val flightsRequest = call.receive<FlightsRequest>()
                     val offersResponse = flightService.getFlightOffers(
                         flightsRequest = flightsRequest
                     )
 
                     when (offersResponse.offers.isEmpty()) {
-                        true -> call.respond(HttpStatusCode.NoContent, ErrorResponse("No results found", 204))
+                        true -> call.respond(HttpStatusCode.OK, OffersResponse(emptyList()))
                         false -> call.respond(offersResponse)
                     }
 
@@ -56,7 +57,7 @@ class FlightsController(
                     val airportsResponse = flightService.getAirports(pattern)
 
                     when (airportsResponse.airports.isEmpty()) {
-                        true -> call.respond(HttpStatusCode.NoContent, emptyResponse)
+                        true -> call.respond(HttpStatusCode.OK, emptyResponse)
                         false -> call.respond(airportsResponse)
                     }
                 }
