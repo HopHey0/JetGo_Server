@@ -6,21 +6,20 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.hophey.config.JwtConfig
 import com.hophey.config.JwtConfig.jwtAudience
 import com.hophey.config.JwtConfig.jwtRealm
-import com.hophey.config.JwtConfig.jwtSecret
 import io.ktor.server.auth.jwt.JWTCredential
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.sql.Date
 
-class JwtService() {
+class JwtService(
+    private val jwtSecret: String,
+) {
 
-    companion object {
-        val verifier: JWTVerifier = JWT.require(Algorithm.HMAC256(JwtConfig.jwtSecret))
-        .withAudience(JwtConfig.jwtAudience)
-        .withIssuer(JwtConfig.jwtRealm)
-        .build()
-    }
+    val verifier: JWTVerifier = JWT.require(Algorithm.HMAC256(jwtSecret))
+    .withAudience(JwtConfig.jwtAudience)
+    .withIssuer(JwtConfig.jwtRealm)
+    .build()
 
     fun validator(credential: JWTCredential): JWTPrincipal?{
         val username = credential.payload.getClaim("username").asString()

@@ -1,0 +1,14 @@
+ktor:
+  deployment:
+    port: 8081
+  application:
+    modules:
+      - com.hophey.MainKt.module
+
+  jwt:
+    secret: "${JWT_SECRET:secret}"
+
+  db:
+    jdbcUrl: "${DB_JDBC_URL:jdbc:postgresql://127.0.0.1:5432/postgres}"
+    username: "${DB_USERNAME:postgres}"
+    password: "${DB_PASSWORD:postgres}"

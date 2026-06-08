@@ -1,7 +1,6 @@
-package com.hophey.repository.tables
+package com.hophey.repository.tables.authTables
 
 import org.jetbrains.exposed.v1.core.Table
-import org.jetbrains.exposed.v1.core.dao.id.LongIdTable
 import org.jetbrains.exposed.v1.datetime.timestampWithTimeZone
 
 object UserTokens : Table("user_tokens") {
