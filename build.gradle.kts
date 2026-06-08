@@ -16,6 +16,8 @@ kotlin {
     jvmToolchain(21)
 }
 dependencies {
+
+    // Core (contentNegotiation, JSON, logs, engine etc)
     implementation(ktorLibs.client.apache)
     implementation(ktorLibs.client.core)
     implementation(ktorLibs.serialization.kotlinx.json)
@@ -27,13 +29,28 @@ dependencies {
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.di)
     implementation(ktorLibs.server.netty)
-    implementation(libs.h2database.h2)
+    implementation("io.ktor:ktor-server-cors:3.4.0")
+    implementation("io.ktor:ktor-server-status-pages:3.4.0")
+
+    // /health endpoint
     implementation(libs.hayden.khealth)
-    implementation(libs.kborowy.firebaseAuthProvider)
+
+    // DI
     implementation(libs.koin.ktor)
+
+    // Logs
     implementation(libs.koin.loggerSlf4j)
     implementation(libs.logback.classic)
+
+    // Exposed/DB
+    implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("org.jetbrains.exposed:exposed-core:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-dao:1.3.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.3.0")
     implementation(libs.postgresql)
+    implementation(libs.h2database.h2)
+
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)

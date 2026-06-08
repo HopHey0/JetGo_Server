@@ -1,8 +1,12 @@
 package com.hophey
 
-import io.ktor.server.engine.*
+import com.hophey.di.appModule
 import io.ktor.server.application.*
+import io.ktor.server.netty.*
 
-fun main(args: Array<String>) {
-    io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = EngineMain.main(args)
+
+
+fun Application.module() {
+    appModule()
 }
